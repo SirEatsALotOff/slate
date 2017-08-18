@@ -1,6 +1,9 @@
 @echo off
+for /f "skip=29" %%G IN (slate.config) DO if not defined prg set "prg=%%G"
 set versionNumber=1
-
+IF "%prg%"=="1" (
+call C:\SLATE\autoinstaller.bat
+ )
 ::Writes to config a successful log on
 	for /f "skip=24" %%G IN (slate.config) DO if not defined line set "line=%%G"
 	Set /A ress=%line%+1
@@ -77,10 +80,19 @@ echo [91mWelcome to slate.[0m
 		if "%headerCommand%"=="setTitle" goto setTitle
 		if "%headerCommand%"=="setColor" goto setColor
 		if "%headerCommand%"=="help" goto help
-		
+		if "%headerCommand%"=="enableupdate" goto autoupdate
 goto head
+:autoupdate
+cls
+	set /p "updateChoice= Are you sure you would like to enable auto update? (y/n) "
+		if "%updateChoice%"=="y" goto setautoupdate
+		if "%updateChoice%"=="n" goto head
+		if "%updateChoice%"=="Y" goto setautoupdate
+		if "%updateChoice%"=="N" goto head
+:setautoupdate
+call :TEXTMAN RL 30 "slate.config" "1"
+echo Config updated: Will check for updates on startup.
 :setTitle
-
 cls
 echo [91mIf you would like to just reset the title, type in 0.
 echo Titles must only be valid characters! (probably)[0m
@@ -109,11 +121,16 @@ echo [91mIf you would like to just reset the color, type in 0.[0m
 	)
 :help
 cls
-echo [91mSEAL HELP[0m
+echo SEAL HELP
 echo.
-echo 	setTitle ~ Allows you to set a custom title
-echo	setColor ~ Allows you to set a custom color
-echo	help	 ~ Opens the help menu.
+echo [91mThis color means feature hasn't been added yet.[0m
+echo.
+echo	setTitle	 ~ Allows you to set a custom title.
+echo	setColor	 ~ Allows you to set a custom color.
+echo	help		 ~ Opens the help menu.
+echo	enableupdate ~ Enables automatic updates on each start of the program. Also on computer start up if enabled.
+echo	[91monstart		 ~ Enables SLATE and associated files to open on startup.
+echo	configHelp	 ~ Opens config documentation[0m
 pause
 goto head
 :TEXTMAN
