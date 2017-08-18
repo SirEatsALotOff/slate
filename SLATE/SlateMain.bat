@@ -5,7 +5,6 @@ set versionNumber=1
 	for /f "skip=24" %%G IN (slate.config) DO if not defined line set "line=%%G"
 	Set /A ress=%line%+1
 	call :TEXTMAN RL 25 "slate.config" "%ress%"
-	
 	for /f "skip=25" %%G IN (slate.config) DO if not defined linee set "linee=%%G"
 	for /f "skip=26" %%G IN (slate.config) DO if not defined lineee set "lineee=%%G"
 	for /f "skip=27" %%G IN (slate.config) DO if not defined colorN set "colorN=%%G"
@@ -16,7 +15,7 @@ IF %colorN%==1 (
     color %colorC%
 	goto neext
  ) ELSE ( 
-
+ 
     color 07
 	goto neext
  )
@@ -32,10 +31,8 @@ IF %linee%==1 (
  )
 
 :next
-
 goto head
 exit
-
 ((I USE THIS TO WRITE TO FILES))
 
 	 by Elektro H@cker
@@ -62,7 +59,9 @@ exit
 	  L-  = LINE_LESS          * Cut the last  "X" amount of lines.
 	  GL  = GET_LINE           * Delete all except "X" line.
 	  GR  = GET_RANGE          * Delete all except "X" range of lines.
-	  Welcome to the documentation of slate
+	  
+	  
+	 Welcome to the documentation of slate
 	
 	
 	
@@ -70,18 +69,23 @@ exit
 :head
 set headerCommand=0
 cls
+echo Type "help" to see the available commands.
+echo.
+echo.
 echo [91mWelcome to slate.[0m
 	set /p "headerCommand= Enter a command here: "
-		if %headerCommand%==setTitle goto setTitle
-		if %headerCommand%==setColor goto setColor
-
+		if "%headerCommand%"=="setTitle" goto setTitle
+		if "%headerCommand%"=="setColor" goto setColor
+		if "%headerCommand%"=="help" goto help
+		
 goto head
 :setTitle
+
 cls
 echo [91mIf you would like to just reset the title, type in 0.
 echo Titles must only be valid characters! (probably)[0m
 	set /p "customTitle= Title ~ "
-		IF %customTitle%==0 (
+		IF "%customTitle%"=="0" (
 	call :TEXTMAN RL 26 "slate.config" 0
 	goto head
 	) ELSE ( 
@@ -90,8 +94,6 @@ echo Titles must only be valid characters! (probably)[0m
 		 call :TEXTMAN RL 26 "slate.config" 1
 		 goto head
 	)
-
-	
 :setColor
 cls
 echo [91mIf you would like to just reset the color, type in 0.[0m
@@ -105,9 +107,14 @@ echo [91mIf you would like to just reset the color, type in 0.[0m
 		 call :TEXTMAN RL 28 "slate.config" 1
 		 goto head
 	)
-
-	
-	
+:help
+cls
+echo [91mSEAL HELP[0m
+echo.
+echo 	setTitle ~ Allows you to set a custom title
+echo	setColor ~ Allows you to set a custom color
+echo	help	 ~ Opens the help menu.
+pause
 goto head
 :TEXTMAN
 (SET /A "A=0", "LINE=0", "TOTAL_LINES=0")  &  (CALL :%~1 %* || (ECHO Invalid parameter & Exit /B 1)) & (GOTO:EOF)
