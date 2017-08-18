@@ -5,10 +5,22 @@ set versionNumber=1
 	for /f "skip=24" %%G IN (slate.config) DO if not defined line set "line=%%G"
 	Set /A ress=%line%+1
 	call :TEXTMAN RL 25 "slate.config" "%ress%"
-
+	
 	for /f "skip=25" %%G IN (slate.config) DO if not defined linee set "linee=%%G"
 	for /f "skip=26" %%G IN (slate.config) DO if not defined lineee set "lineee=%%G"
-	
+	for /f "skip=27" %%G IN (slate.config) DO if not defined colorN set "colorN=%%G"
+	for /f "skip=28" %%G IN (slate.config) DO if not defined colorC set "colorC=%%G"
+
+IF %colorN%==1 (
+    Echo Custom Color Detected
+    color %colorC%
+	goto neext
+ ) ELSE ( 
+
+    color 07
+	goto neext
+ )
+:neext
 IF %linee%==1 (
     Echo Custom Name Detected
     title %lineee%
@@ -56,13 +68,14 @@ exit
 	
 	
 :head
-
+set headerCommand=0
 cls
 echo [91mWelcome to slate.[0m
 	set /p "headerCommand= Enter a command here: "
 		if %headerCommand%==setTitle goto setTitle
+		if %headerCommand%==setColor goto setColor
 
-		
+goto head
 :setTitle
 cls
 echo [91mIf you would like to just reset the title, type in 0.
@@ -73,11 +86,28 @@ echo Titles must only be valid characters! (probably)[0m
 	goto head
 	) ELSE ( 
 		 call :TEXTMAN RL 27 "slate.config" "%customTitle%"
-		 title customTitle
+		 title %customTitle%
 		 call :TEXTMAN RL 26 "slate.config" 1
 		 goto head
 	)
 
+	
+:setColor
+cls
+echo [91mIf you would like to just reset the color, type in 0.[0m
+	set /p "customColor= Color ~ "
+		IF %customColor%==0 (
+	call :TEXTMAN RL 28 "slate.config" 0
+	goto head
+	) ELSE ( 
+		 call :TEXTMAN RL 29 "slate.config" "%customColor%"
+		 color %customColor%
+		 call :TEXTMAN RL 28 "slate.config" 1
+		 goto head
+	)
+
+	
+	
 goto head
 :TEXTMAN
 (SET /A "A=0", "LINE=0", "TOTAL_LINES=0")  &  (CALL :%~1 %* || (ECHO Invalid parameter & Exit /B 1)) & (GOTO:EOF)
