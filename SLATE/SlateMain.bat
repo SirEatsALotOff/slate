@@ -1,5 +1,6 @@
 @echo off
 for /f "skip=29" %%G IN (slate.config) DO if not defined prg set "prg=%%G"
+
 set versionNumber=1
 IF "%prg%"=="1" (
 call C:\SLATE\autoinstaller.bat
