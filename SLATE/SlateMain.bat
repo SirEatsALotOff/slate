@@ -1,12 +1,29 @@
 @echo off
-title SLATEMAIN
+set versionNumber=1
+
 ::Writes to config a successful log on
 	for /f "skip=24" %%G IN (slate.config) DO if not defined line set "line=%%G"
 	Set /A ress=%line%+1
 	call :TEXTMAN RL 25 "slate.config" "%ress%"
 
+	for /f "skip=25" %%G IN (slate.config) DO if not defined linee set "linee=%%G"
+	for /f "skip=26" %%G IN (slate.config) DO if not defined lineee set "lineee=%%G"
+	
+IF %linee%==1 (
+    Echo Custom Name Detected
+    title "%lineee%"
+	goto next
+ ) ELSE ( 
+
+    title SLATE VERSION %versionNumber%
+	goto next
+ )
+
+:next
+
 goto head
 exit
+
 ((I USE THIS TO WRITE TO FILES))
 
 	 by Elektro H@cker
