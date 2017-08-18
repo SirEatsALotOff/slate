@@ -11,7 +11,7 @@ set versionNumber=1
 	
 IF %linee%==1 (
     Echo Custom Name Detected
-    title "%lineee%"
+    title %lineee%
 	goto next
  ) ELSE ( 
 
@@ -59,11 +59,24 @@ exit
 
 cls
 echo [91mWelcome to slate.[0m
-pause
+	set /p "headerCommand= Enter a command here: "
+		if %headerCommand%==setTitle goto setTitle
 
-
-
-
+		
+:setTitle
+cls
+echo [91mIf you would like to just reset the title, type in 0.
+echo Titles must only be valid characters! (probably)[0m
+	set /p "customTitle= Title ~ "
+		IF %customTitle%==0 (
+	call :TEXTMAN RL 26 "slate.config" 0
+	goto head
+	) ELSE ( 
+		 call :TEXTMAN RL 27 "slate.config" "%customTitle%"
+		 title customTitle
+		 call :TEXTMAN RL 26 "slate.config" 1
+		 goto head
+	)
 
 goto head
 :TEXTMAN
